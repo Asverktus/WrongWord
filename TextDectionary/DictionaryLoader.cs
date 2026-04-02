@@ -30,9 +30,10 @@ namespace TextCorrector
 
     private void AddCorrection(string correctWord, string[] wrongWords)
     {
+      string trimmedWrongWord;
+
       foreach (string wrongWord in wrongWords)
       {
-        string trimmedWrongWord;
         trimmedWrongWord = wrongWord.Trim();
 
         if (!string.IsNullOrEmpty(trimmedWrongWord))
@@ -57,15 +58,16 @@ namespace TextCorrector
       int notFound;
       notFound = -1;
 
+      string wrongWordLower;
+      string correctWord;
+      int index;
+      string foundWord;
+      string replacement;
+
       foreach (KeyValuePair<string, string> entry in _corrections)
       {
-        string wrongWordLower;
         wrongWordLower = entry.Key;
-
-        string correctWord;
         correctWord = entry.Value;
-
-        int index;
         index = 0;
 
         while (true)
@@ -77,10 +79,7 @@ namespace TextCorrector
             break;
           }
 
-          string foundWord;
           foundWord = result.Substring(index, wrongWordLower.Length);
-
-          string replacement;
           replacement = ApplyCasePreserving(correctWord, foundWord);
 
           result = result.Substring(0, index) + replacement + result.Substring(index + wrongWordLower.Length);
@@ -137,7 +136,6 @@ namespace TextCorrector
         if (char.IsLetter(currentChar) && !char.IsUpper(currentChar))
         {
           allUpper = false;
-
           break;
         }
       }
